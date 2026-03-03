@@ -14,7 +14,7 @@ font-family:'Poppins',sans-serif;
 color:white;
 }
 
-/* Background Text */
+/* Romantic Text */
 #overlayText{
 position:absolute;
 top:15%;
@@ -41,7 +41,6 @@ background:linear-gradient(45deg,#ff0080,#ff8c00);
 color:white;
 cursor:pointer;
 z-index:10;
-transition:0.3s;
 }
 
 /* Secret Romantic Button */
@@ -99,7 +98,6 @@ I want YOU to color my life forever 💖✨
 </div>
 
 <button id="secretBtn">Something Important 💌</button>
-
 <button id="proposalBtn">Click for a Surprise 🎁</button>
 
 <div class="modal" id="proposalModal">
@@ -112,10 +110,19 @@ I want YOU to color my life forever 💖✨
 
 <script>
 
-/* SOUND */
-const fahSound = new Audio("https://www.myinstants.com/media/sounds/vine-boom.mp3");
+/* ---------------- SOUND SETUP ---------------- */
 
-/* THREE JS BACKGROUND */
+const fahSound = new Audio();
+fahSound.src = "fahhhhh.mp3";  // your local file
+fahSound.preload = "auto";
+fahSound.volume = 1.0;
+
+function playFah(){
+    fahSound.currentTime = 0;
+    fahSound.play().catch(e => console.log("Playback blocked:", e));
+}
+
+/* ---------------- THREE JS BACKGROUND ---------------- */
 
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
@@ -160,7 +167,7 @@ camera.updateProjectionMatrix();
 renderer.setSize(window.innerWidth,window.innerHeight);
 });
 
-/* EXPLOSION */
+/* ---------------- COLOR EXPLOSION ---------------- */
 
 function createColorExplosion(){
 
@@ -209,13 +216,17 @@ requestAnimationFrame(explode);
 explode();
 }
 
-/* MODAL */
+/* ---------------- MODAL LOGIC ---------------- */
 
 const modal=document.getElementById("proposalModal");
-document.getElementById("proposalBtn").onclick=()=>modal.classList.add("active");
+const overlay=document.getElementById("overlayText");
+
+document.getElementById("proposalBtn").onclick=()=>{
+modal.classList.add("active");
+};
 
 document.getElementById("yesBtn").onclick=()=>{
-fahSound.play(); // FAAAAH sound
+playFah(); // 🔊 FAAAAH SOUND
 modal.innerHTML="<h2>Yayyyyy!! 🌈💖<br>Now get ready for COLOR ATTACK! 🎉</h2>";
 createColorExplosion();
 };
@@ -224,13 +235,12 @@ document.getElementById("noBtn").onclick=()=>{
 modal.querySelector("h2").innerText="Nice try 😜 but destiny says YES!";
 };
 
-/* SECRET ROMANTIC BUTTON */
+/* ---------------- SECRET ROMANTIC ASK ---------------- */
 
 document.getElementById("secretBtn").onclick=()=>{
-fahSound.play();
+playFah();
 createColorExplosion();
-
-overlayText.innerHTML="💖 Since you’re already here... <br> Will you go on a cute Holi date with me? 🌸✨";
+overlay.innerHTML="💖 Since you’re already here... <br> Will you go on a cute Holi date with me? 🌸✨";
 };
 
 </script>
