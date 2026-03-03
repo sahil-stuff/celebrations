@@ -14,6 +14,7 @@ font-family:'Poppins',sans-serif;
 color:white;
 }
 
+/* Background Text */
 #overlayText{
 position:absolute;
 top:15%;
@@ -26,6 +27,7 @@ z-index:10;
 transition:0.5s;
 }
 
+/* Surprise Button */
 #proposalBtn{
 position:absolute;
 bottom:50px;
@@ -41,6 +43,7 @@ cursor:pointer;
 z-index:10;
 }
 
+/* Modal */
 .modal{
 position:fixed;
 top:50%;
@@ -56,19 +59,17 @@ transition:0.4s ease;
 width:85%;
 max-width:400px;
 }
-
 .modal.active{
 transform:translate(-50%,-50%) scale(1);
 }
-
 .modal button{
 margin:10px;
 padding:10px 20px;
 border:none;
 border-radius:20px;
 cursor:pointer;
+transition:0.3s;
 }
-
 #yesBtn,#dateYesBtn{background:#28a745;color:white;}
 #noBtn,#dateNoBtn{background:#dc3545;color:white;position:relative;}
 #secretBtn{background:#ff0080;color:white;display:none;}
@@ -180,8 +181,6 @@ requestAnimationFrame(explode);
 explode();
 }
 
-/* -------- HEART BLOSSOM EXPLOSION -------- */
-
 function createHeartExplosion(){
 const count=2000;
 const geo=new THREE.BufferGeometry();
@@ -190,7 +189,7 @@ const col=new Float32Array(count*3);
 
 for(let i=0;i<count*3;i+=3){
 pos[i]=0;pos[i+1]=0;pos[i+2]=0;
-col[i]=1;col[i+1]=0;col[i+2]=0; // RED
+col[i]=1;col[i+1]=0;col[i+2]=0;
 }
 
 geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
@@ -202,11 +201,7 @@ scene.add(exp);
 
 const velocity=[];
 for(let i=0;i<count;i++){
-velocity.push({
-x:(Math.random()-0.5)*0.5,
-y:(Math.random())*0.6,
-z:(Math.random()-0.5)*0.5
-});
+velocity.push({x:(Math.random()-0.5)*0.5,y:(Math.random())*0.6,z:(Math.random()-0.5)*0.5});
 }
 
 function explode(){
@@ -229,9 +224,11 @@ const modalText=document.getElementById("modalText");
 const yesBtn=document.getElementById("yesBtn");
 const noBtn=document.getElementById("noBtn");
 const secretBtn=document.getElementById("secretBtn");
+const overlayText=document.getElementById("overlayText");
 
 document.getElementById("proposalBtn").onclick=()=>modal.classList.add("active");
 
+/* Holi YES */
 yesBtn.onclick=()=>{
 playFah();
 createColorExplosion();
@@ -241,57 +238,62 @@ noBtn.style.display="none";
 secretBtn.style.display="inline-block";
 };
 
-/* Irritating NO */
+/* Holi NO */
 let noClicks=0;
+const noMessages=["Are you sure? 🥺","I bought colors 😭","Destiny says YES 😌","You can't escape 😂"];
+const bgMessages=["Holi needs YOU 🌸","My colors shine with you 💖","Say yes already 😏","Stop resisting 😜"];
+
 noBtn.onclick=()=>{
-const msgs=[
-"Are you sure? 🥺",
-"I already bought colors 😭",
-"Destiny says YES 😌",
-"You can't escape 😂"
-];
-modalText.innerHTML=msgs[noClicks%msgs.length];
+modalText.innerHTML=noMessages[noClicks%noMessages.length];
+overlayText.innerHTML=bgMessages[noClicks%bgMessages.length];
 noClicks++;
 noBtn.style.position="absolute";
 noBtn.style.top=Math.random()*250+"px";
 noBtn.style.left=Math.random()*250+"px";
 };
 
-/* Secret → Date Confirmation */
+/* Date Stage */
 secretBtn.onclick=()=>{
 modalText.innerHTML=`
+<div id="dateQuestion">
 💖 Now that you said YES to Holi...<br><br>
-Will you go on a cute date with me too? 🌸✨<br><br>
+Will you go on a cute date with me too? 🌸✨
+</div>
+<br>
 <button id="dateYesBtn">Yes ❤️</button>
 <button id="dateNoBtn">No 😜</button>
 `;
 
 secretBtn.style.display="none";
 
-/* Date Buttons */
 setTimeout(()=>{
 
 const dateYes=document.getElementById("dateYesBtn");
 const dateNo=document.getElementById("dateNoBtn");
+const dateQuestion=document.getElementById("dateQuestion");
 
 let dateNoClicks=0;
+const convincing=["Think again 😏","Come onnn 🥺","You know you want to 😉","I'll bring chocolates 🍫","Last chance 😌"];
 
 dateNo.onclick=()=>{
-const msgs=["Think again 😏","Come onnn 🥺","Pleaseeee 💖","You know you want to 😉"];
-modalText.innerHTML=msgs[dateNoClicks%msgs.length];
+if(dateNoClicks<convincing.length){
+dateQuestion.innerHTML=convincing[dateNoClicks];
+dateYes.style.transform=`scale(${1 + dateNoClicks*0.2})`;
+dateNo.style.transform=`scale(${1 - dateNoClicks*0.1})`;
 dateNoClicks++;
+}else{
 dateNo.style.position="absolute";
 dateNo.style.top=Math.random()*200+"px";
 dateNo.style.left=Math.random()*200+"px";
+}
 };
 
 dateYes.onclick=()=>{
-createHeartExplosion(); // ❤️ HEART BLOSSOM
-modalText.innerHTML="💘 Best decision everrrr!! 🌸✨";
+createHeartExplosion();
+modalText.innerHTML="💘 BEST DECISION EVER!!! 🌸✨";
 };
 
 },100);
-
 };
 
 </script>
