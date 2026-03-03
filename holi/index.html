@@ -43,22 +43,6 @@ cursor:pointer;
 z-index:10;
 }
 
-/* Secret Romantic Button */
-#secretBtn{
-position:absolute;
-top:20px;
-right:20px;
-padding:8px 16px;
-font-size:14px;
-border:none;
-border-radius:20px;
-background:rgba(255,255,255,0.15);
-color:white;
-cursor:pointer;
-z-index:10;
-backdrop-filter:blur(6px);
-}
-
 /* Modal */
 .modal{
 position:fixed;
@@ -85,8 +69,14 @@ border:none;
 border-radius:20px;
 cursor:pointer;
 }
+
 #yesBtn{background:#28a745;color:white;}
 #noBtn{background:#dc3545;color:white;position:relative;}
+#secretBtn{
+background:#ff0080;
+color:white;
+display:none;
+}
 </style>
 </head>
 
@@ -97,23 +87,23 @@ cursor:pointer;
 I want YOU to color my life forever 💖✨
 </div>
 
-<button id="secretBtn">Something Important 💌</button>
 <button id="proposalBtn">Click for a Surprise 🎁</button>
 
 <div class="modal" id="proposalModal">
-<h2>Will you play Holi with me? 🌈💖</h2>
+<h2 id="modalText">Will you play Holi with me? 🌈💖</h2>
 <button id="yesBtn">Yes 😍</button>
 <button id="noBtn">No 😜</button>
+<button id="secretBtn">Something Important 💌</button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 
-/* ---------------- SOUND SETUP ---------------- */
+/* ---------------- SOUND ---------------- */
 
 const fahSound = new Audio();
-fahSound.src = "fahhhhh.mp3";  // your local file
+fahSound.src = "fahhhhh.mp3";
 fahSound.preload = "auto";
 fahSound.volume = 1.0;
 
@@ -122,7 +112,7 @@ function playFah(){
     fahSound.play().catch(e => console.log("Playback blocked:", e));
 }
 
-/* ---------------- THREE JS BACKGROUND ---------------- */
+/* ---------------- THREE BACKGROUND ---------------- */
 
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
@@ -167,7 +157,7 @@ camera.updateProjectionMatrix();
 renderer.setSize(window.innerWidth,window.innerHeight);
 });
 
-/* ---------------- COLOR EXPLOSION ---------------- */
+/* ---------------- EXPLOSION ---------------- */
 
 function createColorExplosion(){
 
@@ -219,28 +209,39 @@ explode();
 /* ---------------- MODAL LOGIC ---------------- */
 
 const modal=document.getElementById("proposalModal");
-const overlay=document.getElementById("overlayText");
+const modalText=document.getElementById("modalText");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const secretBtn=document.getElementById("secretBtn");
 
 document.getElementById("proposalBtn").onclick=()=>{
 modal.classList.add("active");
 };
 
-document.getElementById("yesBtn").onclick=()=>{
-playFah(); // 🔊 FAAAAH SOUND
-modal.innerHTML="<h2>Yayyyyy!! 🌈💖<br>Now get ready for COLOR ATTACK! 🎉</h2>";
-createColorExplosion();
-};
-
-document.getElementById("noBtn").onclick=()=>{
-modal.querySelector("h2").innerText="Nice try 😜 but destiny says YES!";
-};
-
-/* ---------------- SECRET ROMANTIC ASK ---------------- */
-
-document.getElementById("secretBtn").onclick=()=>{
+yesBtn.onclick=()=>{
 playFah();
 createColorExplosion();
-overlay.innerHTML="💖 Since you’re already here... <br> Will you go on a cute Holi date with me? 🌸✨";
+
+modalText.innerHTML="Yayyyyy!! 🌈💖<br>You just made this Holi magical! ✨";
+yesBtn.style.display="none";
+noBtn.style.display="none";
+
+secretBtn.style.display="inline-block";  // show secret button
+};
+
+noBtn.onclick=()=>{
+modalText.innerText="Nice try 😜 but destiny says YES!";
+};
+
+/* ---------------- SECRET ASK OUT ---------------- */
+
+secretBtn.onclick=()=>{
+playFah();
+createColorExplosion();
+
+modalText.innerHTML="💖 Now that you said YES to Holi... <br><br> Will you go on a cute date with me too? 🌸✨";
+
+secretBtn.style.display="none";
 };
 
 </script>
